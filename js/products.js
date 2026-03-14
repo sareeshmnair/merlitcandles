@@ -67,7 +67,7 @@ const PRODUCTS = [
     badge: "Best Seller",
     featured: true,
     inStock: true,
-    amazonLink: "",
+    amazonLink: "https://www.google.com",
   },
   {
     id: 2,
@@ -86,7 +86,7 @@ const PRODUCTS = [
     badge: "",
     featured: true,
     inStock: true,
-    amazonLink: "",
+    amazonLink: "https://www.google.com",
   },
   {
     id: 3,
@@ -104,6 +104,7 @@ const PRODUCTS = [
     badge: "New",
     featured: true,
     inStock: true,
+    amazonLink: "https://www.google.com",
   },
   {
     id: 4,
@@ -121,6 +122,7 @@ const PRODUCTS = [
     badge: "Premium",
     featured: true,
     inStock: true,
+    amazonLink: "https://www.google.com",
   },
   {
     id: 5,
@@ -138,6 +140,7 @@ const PRODUCTS = [
     badge: "",
     featured: false,
     inStock: true,
+    amazonLink: "https://www.google.com",
   },
   {
     id: 6,
@@ -155,6 +158,7 @@ const PRODUCTS = [
     badge: "",
     featured: false,
     inStock: true,
+    amazonLink: "https://www.google.com",
   },
   {
     id: 7,
@@ -172,6 +176,7 @@ const PRODUCTS = [
     badge: "Seasonal",
     featured: false,
     inStock: true,
+    amazonLink: "https://www.google.com",
   },
   {
     id: 8,
@@ -189,5 +194,6 @@ const PRODUCTS = [
     badge: "",
     featured: false,
     inStock: false,
+    amazonLink: "https://www.google.com",
   },
 ];
