@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shop — MyCandle</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <style>
+    .shop-hero {
+      padding: 9rem 4rem 3rem;
+      background: linear-gradient(180deg, var(--sand) 0%, var(--cream) 100%);
+      text-align: center;
+    }
+    .shop-hero h1 { font-size: clamp(2.5rem, 4vw, 4rem); margin-bottom: 0.6rem; }
+    .shop-hero p { font-size: 0.9rem; color: var(--light-text); }
+
+    .shop-controls { padding: 2.5rem 4rem 0; }
+
+    #productCount {
+      text-align: center; font-size: 0.78rem; color: var(--taupe);
+      margin-bottom: 1rem; letter-spacing: 0.05em;
+    }
+
+    #productSection { padding: 2.5rem 4rem 6rem; }
+    .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 2rem; }
+
+    @media (max-width: 768px) {
+      .shop-hero { padding: 8rem 1.5rem 2.5rem; }
+      .shop-controls { padding: 2rem 1.5rem 0; }
+      #productSection { padding: 2rem 1.5rem 5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav id="main-nav"></nav>
+
+  <div class="shop-hero fade-up">
+    <p class="section-eyebrow">Browse</p>
+    <h1>Our Full Collection</h1>
+    <p>Hand-poured soy candles in over 100 unique scents</p>
+  </div>
+
+  <div class="shop-controls">
+    <!-- Search -->
+    <div class="search-wrap fade-up">
+      <svg class="search-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input class="search-input" id="searchInput" type="text" placeholder="Search by name or scent…" />
+    </div>
+    <!-- Category Filters -->
+    <div class="filter-bar fade-up" id="filterBar"></div>
+    <p id="productCount"></p>
+  </div>
+
+  <section id="productSection">
+    <div class="products-grid" id="shopGrid"></div>
+    <div class="pagination" id="pagination"></div>
+  </section>
+
+  <footer id="main-footer"></footer>
+
+  <script src="../js/products.js"></script>
+  <script src="../js/ui.js"></script>
+  <script>
+    // Fix asset paths since we're in /pages/ subfolder
+    const BASE = '../';
+
+    injectNav('shop');
+    injectFooter();
+    injectModal();
+    initModal();
+    initScrollAnimations();
+
+    // Override productCardHTML image path for /pages/ subfolder
+    function cardHTML(p) {
+      const imgSrc = p.image ? BASE + p.image : '';
+      const imgContent = imgSrc
+        ? `<img src="${imgSrc}" alt="${p.name}" loading="lazy">`
+        : `<div class="product-img-placeholder"><div class="placeholder-candle"></div></div>`;
+      const badgeHTML = !p.inStock
+        ? `<span class="product-badge badge-out">Out of Stock</span>`
+        : p.badge ? `<span class="product-badge">${p.badge}</span>` : '';
+      return `
+        <div class="product-img-wrap">${imgContent}${badgeHTML}</div>
+        <div class="product-info">
+          <p class="product-category">${p.category}</p>
+          <h3 class="product-name">${p.name}</h3>
+          <p class="product-scent">${p.scent}</p>
+          <div class="product-footer">
+            <span class="product-price">${p.price}</span>
+            <button class="product-view-btn">View ${SVG.arrow}</button>
+          </div>
+        </div>`;
+    }
+
+    // ── STATE ──
+    const ITEMS_PER_PAGE = 12;
+    let currentPage = 1;
+    let activeCategory = 'All';
+    let searchQuery = '';
+
+    // ── BUILD FILTERS ──
+    const filterBar = document.getElementById('filterBar');
+    CATEGORIES.forEach(cat => {
+      const btn = document.createElement('button');
+      btn.className = 'filter-btn' + (cat === 'All' ? ' active' : '');
+      btn.textContent = cat;
+      btn.addEventListener('click', () => {
+        activeCategory = cat;
+        currentPage = 1;
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        render();
+      });
+      filterBar.appendChild(btn);
+    });
+
+    // ── SEARCH ──
+    document.getElementById('searchInput').addEventListener('input', e => {
+      searchQuery = e.target.value.toLowerCase();
+      currentPage = 1;
+      render();
+    });
+
+    // ── FILTER ──
+    function filteredProducts() {
+      return PRODUCTS.filter(p => {
+        const matchCat = activeCategory === 'All' || p.category === activeCategory;
+        const matchSearch = !searchQuery ||
+          p.name.toLowerCase().includes(searchQuery) ||
+          p.scent.toLowerCase().includes(searchQuery) ||
+          p.notes.toLowerCase().includes(searchQuery) ||
+          p.category.toLowerCase().includes(searchQuery);
+        return matchCat && matchSearch;
+      });
+    }
+
+    // ── RENDER PRODUCTS ──
+    function render() {
+      const all = filteredProducts();
+      const totalPages = Math.max(1, Math.ceil(all.length / ITEMS_PER_PAGE));
+      if (currentPage > totalPages) currentPage = totalPages;
+      const start = (currentPage - 1) * ITEMS_PER_PAGE;
+      const pageItems = all.slice(start, start + ITEMS_PER_PAGE);
+
+      // Count
+      document.getElementById('productCount').textContent =
+        all.length === 0 ? 'No products found'
+        : `Showing ${start + 1}–${Math.min(start + ITEMS_PER_PAGE, all.length)} of ${all.length} products`;
+
+      // Grid
+      const grid = document.getElementById('shopGrid');
+      grid.innerHTML = '';
+      if (pageItems.length === 0) {
+        grid.innerHTML = `<div class="empty-state">${SVG.empty}<p>No candles match your search.</p></div>`;
+      } else {
+        pageItems.forEach((p, i) => {
+          const card = document.createElement('div');
+          card.className = 'product-card fade-up';
+          card.style.transitionDelay = `${i * 0.04}s`;
+          card.innerHTML = cardHTML(p);
+          card.addEventListener('click', () => openModal(p));
+          grid.appendChild(card);
+        });
+        initScrollAnimations();
+      }
+
+      // Pagination
+      renderPagination(totalPages);
+    }
+
+    // ── PAGINATION ──
+    function renderPagination(totalPages) {
+      const pg = document.getElementById('pagination');
+      pg.innerHTML = '';
+      if (totalPages <= 1) return;
+
+      const prev = document.createElement('button');
+      prev.className = 'page-btn arrow'; prev.textContent = '←';
+      prev.disabled = currentPage === 1;
+      prev.addEventListener('click', () => { currentPage--; render(); window.scrollTo(0,0); });
+      pg.appendChild(prev);
+
+      // Page number range
+      let start = Math.max(1, currentPage - 2);
+      let end = Math.min(totalPages, start + 4);
+      if (end - start < 4) start = Math.max(1, end - 4);
+
+      if (start > 1) {
+        pg.appendChild(makePageBtn(1, totalPages));
+        if (start > 2) { const dots = document.createElement('span'); dots.textContent = '…'; dots.style.cssText = 'padding:0 0.4rem;color:var(--taupe);font-size:0.85rem'; pg.appendChild(dots); }
+      }
+      for (let i = start; i <= end; i++) pg.appendChild(makePageBtn(i, totalPages));
+      if (end < totalPages) {
+        if (end < totalPages - 1) { const dots = document.createElement('span'); dots.textContent = '…'; dots.style.cssText = 'padding:0 0.4rem;color:var(--taupe);font-size:0.85rem'; pg.appendChild(dots); }
+        pg.appendChild(makePageBtn(totalPages, totalPages));
+      }
+
+      const next = document.createElement('button');
+      next.className = 'page-btn arrow'; next.textContent = '→';
+      next.disabled = currentPage === totalPages;
+      next.addEventListener('click', () => { currentPage++; render(); window.scrollTo(0,0); });
+      pg.appendChild(next);
+    }
+
+    function makePageBtn(n) {
+      const btn = document.createElement('button');
+      btn.className = 'page-btn' + (n === currentPage ? ' active' : '');
+      btn.textContent = n;
+      btn.addEventListener('click', () => { currentPage = n; render(); window.scrollTo(0,0); });
+      return btn;
+    }
+
+    // Initial render
+    render();
+  </script>
+</body>
+</html>
