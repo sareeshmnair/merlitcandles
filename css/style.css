@@ -337,17 +337,84 @@ footer {
 .empty-state svg { width: 48px; height: 48px; margin: 0 auto 1rem; stroke: var(--taupe); fill: none; stroke-width: 1.5; }
 .empty-state p { font-size: 0.9rem; }
 
+/* ── HAMBURGER BUTTON ── */
+.hamburger {
+  display: none;
+  background: none; border: none; cursor: pointer;
+  width: 38px; height: 38px; align-items: center; justify-content: center;
+  color: var(--deep); padding: 4px;
+  transition: color var(--transition);
+}
+.hamburger:hover { color: var(--ember); }
+.hamburger svg { width: 22px; height: 22px; }
+
+/* Social icons inside mobile drawer */
+.nav-social-mobile {
+  display: none;
+  align-items: center; gap: 1rem;
+  padding: 1rem 0 0.5rem;
+  border-top: 1px solid var(--sand); margin-top: 0.5rem;
+}
+.nav-social-mobile a {
+  width: 34px; height: 34px; display: flex; align-items: center; justify-content: center;
+  color: var(--light-text); transition: color var(--transition);
+}
+.nav-social-mobile a:hover { color: var(--ember); }
+.nav-social-mobile svg { width: 18px; height: 18px; fill: currentColor; }
+
 /* ── RESPONSIVE ── */
 @media (max-width: 1024px) {
   nav { padding: 1.2rem 2rem; }
   .nav-links { gap: 1.8rem; }
 }
+
 @media (max-width: 768px) {
+  /* Show hamburger, hide desktop social */
+  .hamburger { display: flex; }
+  .nav-social { display: none; }
+
   nav { padding: 1rem 1.5rem; }
-  .nav-links { display: none; }
+
+  /* Full-screen mobile drawer */
+  .nav-links {
+    display: flex !important; /* override the old display:none */
+    flex-direction: column;
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background: var(--cream);
+    justify-content: center; align-items: center;
+    gap: 0; padding: 2rem;
+    transform: translateX(100%);
+    transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
+    z-index: 150;
+  }
+  .nav-links.open { transform: translateX(0); }
+
+  .nav-links li { width: 100%; text-align: center; }
+  .nav-links a {
+    display: block; font-size: 1.4rem; letter-spacing: 0.08em;
+    padding: 1rem 0; color: var(--deep);
+    border-bottom: none !important;
+  }
+  .nav-links a:hover, .nav-links a.active { color: var(--ember); }
+
+  /* Show social icons inside drawer */
+  .nav-social-mobile { display: flex; justify-content: center; }
+
+  /* Ensure hamburger is above the drawer */
+  .nav-right { z-index: 160; position: relative; }
+
+  /* Shop page mobile: smaller cards, 2-column grid */
+  .products-grid { grid-template-columns: repeat(2, 1fr); gap: 0.9rem; }
+  .product-img-wrap { aspect-ratio: 1/1; }   /* square on mobile, saves height */
+  .product-info { padding: 0.8rem 0.9rem 1rem; }
+  .product-name { font-size: 1rem; }
+  .product-scent { font-size: 0.72rem; margin-bottom: 0.6rem; }
+  .product-price { font-size: 1rem; }
+  .product-view-btn { font-size: 0.62rem; }
+  .product-badge { font-size: 0.58rem; padding: 0.22rem 0.5rem; }
+
   .about-strip { grid-template-columns: 1fr; padding: 4rem 2rem; gap: 2.5rem; }
-  .modal { grid-template-columns: 1fr; }
-  .modal-img-area { min-height: 220px; }
+
   footer { flex-direction: column; text-align: center; padding: 2.5rem 1.5rem; }
   .footer-social { justify-content: center; }
 }
