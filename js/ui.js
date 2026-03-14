@@ -39,7 +39,7 @@ function injectNav(activePage) {
   const aboutHref = `${BASE}index.html#about`;
 
   nav.innerHTML = `
-    <a href="${homeHref}" class="nav-logo">My<span>Candle</span></a>
+    <a href="${homeHref}" class="nav-logo">Merlit<span>Candle</span></a>
     <ul class="nav-links" id="navLinks">
       <li><a href="${homeHref}"  ${activePage === 'home'  ? 'class="active"' : ''}>Home</a></li>
       <li><a href="${shopHref}"  ${activePage === 'shop'  ? 'class="active"' : ''}>Shop</a></li>
@@ -85,10 +85,10 @@ function injectFooter() {
   if (!footer) return;
   footer.innerHTML = `
     <div>
-      <div class="footer-logo">My<span>Candle</span></div>
+      <div class="footer-logo">Merlit<span>Candle</span></div>
       <p style="font-size:0.75rem;margin-top:0.4rem;">mycandle.com — Handcrafted with love</p>
     </div>
-    <p class="footer-copy">© ${new Date().getFullYear()} MyCandle. All rights reserved.</p>
+    <p class="footer-copy">© ${new Date().getFullYear()} Merlit Candle. All rights reserved.</p>
     <div class="footer-social">
       <a href="https://instagram.com/YOUR_USERNAME" target="_blank" aria-label="Instagram">${SVG.instagram}</a>
       <a href="https://wa.me/${WHATSAPP_NUMBER}" target="_blank" aria-label="WhatsApp">${SVG.whatsapp}</a>
