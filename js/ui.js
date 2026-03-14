@@ -23,6 +23,8 @@ const SVG = {
   empty: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M8 15s1.5-2 4-2 4 2 4 2M9 9h.01M15 9h.01"/></svg>`,
   hamburger: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>`,
   menuClose: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`,
+  chevLeft:  `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>`,
+  chevRight: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>`,
   amazon: `<svg viewBox="0 0 24 24" fill="currentColor" width="15" height="15"><path d="M13.958 10.09c0 1.232.029 2.256-.591 3.351-.502.891-1.301 1.438-2.186 1.438-1.214 0-1.922-.924-1.922-2.292 0-2.692 2.415-3.182 4.699-3.182v.685zm3.186 7.705c-.209.189-.512.201-.745.076-1.047-.872-1.234-1.276-1.814-2.106-1.734 1.767-2.962 2.297-5.209 2.297-2.66 0-4.731-1.641-4.731-4.925 0-2.565 1.391-4.309 3.37-5.164 1.715-.754 4.11-.891 5.942-1.099v-.41c0-.753.06-1.642-.384-2.294-.385-.577-1.124-.816-1.776-.816-1.208 0-2.284.62-2.548 1.905-.054.285-.261.567-.549.582l-3.061-.333c-.259-.056-.547-.266-.472-.66C5.348 2.062 8.392 1 11.11 1c1.39 0 3.21.37 4.31 1.424C16.76 3.765 16.62 5.558 16.62 7.5v5.082c0 1.527.633 2.198 1.229 3.023.21.294.255.646-.01.865l-2.695 2.325zm3.612 1.854c-2.148 1.594-5.261 2.44-7.941 2.44-3.757 0-7.138-1.389-9.696-3.697-.201-.182-.021-.43.22-.288 2.762 1.608 6.18 2.576 9.708 2.576 2.38 0 4.997-.493 7.405-1.517.364-.153.669.239.304.486zm.869-1.483c-.273-.351-1.815-.166-2.507-.083-.209.024-.241-.158-.053-.291 1.226-.863 3.241-.614 3.476-.325.234.291-.062 2.314-1.213 3.278-.176.149-.344.069-.266-.125.26-.649.838-2.103.563-2.454z"/></svg>`,
 };
 
@@ -37,7 +39,7 @@ function injectNav(activePage) {
   const aboutHref = `${BASE}index.html#about`;
 
   nav.innerHTML = `
-    <a href="${homeHref}" class="nav-logo">Merlit<span>Candle</span></a>
+    <a href="${homeHref}" class="nav-logo">My<span>Candle</span></a>
     <ul class="nav-links" id="navLinks">
       <li><a href="${homeHref}"  ${activePage === 'home'  ? 'class="active"' : ''}>Home</a></li>
       <li><a href="${shopHref}"  ${activePage === 'shop'  ? 'class="active"' : ''}>Shop</a></li>
@@ -83,10 +85,10 @@ function injectFooter() {
   if (!footer) return;
   footer.innerHTML = `
     <div>
-      <div class="footer-logo">Merlit<span>Candle</span></div>
+      <div class="footer-logo">My<span>Candle</span></div>
       <p style="font-size:0.75rem;margin-top:0.4rem;">mycandle.com — Handcrafted with love</p>
     </div>
-    <p class="footer-copy">© ${new Date().getFullYear()} Merlit Candle. All rights reserved.</p>
+    <p class="footer-copy">© ${new Date().getFullYear()} MyCandle. All rights reserved.</p>
     <div class="footer-social">
       <a href="https://instagram.com/YOUR_USERNAME" target="_blank" aria-label="Instagram">${SVG.instagram}</a>
       <a href="https://wa.me/${WHATSAPP_NUMBER}" target="_blank" aria-label="WhatsApp">${SVG.whatsapp}</a>
@@ -116,14 +118,144 @@ function productCardHTML(p) {
     </div>`;
 }
 
+/* ── GALLERY HELPERS ── */
+
+// Build array of all image paths for a product
+function getProductImages(p) {
+  if (!p.image) return [];
+  const count = p.imageCount || 1;
+  if (count <= 1) return [BASE + p.image];
+
+  // Derive base name: "images/vanilla-dusk.jpg" → "images/vanilla-dusk" + ".jpg"
+  const lastDot = p.image.lastIndexOf('.');
+  const base = p.image.substring(0, lastDot);
+  const ext  = p.image.substring(lastDot);  // e.g. ".jpg"
+
+  const imgs = [BASE + p.image];
+  for (let i = 1; i < count; i++) {
+    imgs.push(BASE + base + '-' + i + ext);
+  }
+  return imgs;
+}
+
 /* ── MODAL ── */
 let modalOverlay, modalEl;
+let galleryImages = [], galleryIndex = 0;
+let touchStartX = 0, touchStartY = 0;
+
 function initModal() {
   modalOverlay = document.getElementById('modal');
   modalEl = modalOverlay?.querySelector('.modal');
   document.getElementById('modalClose')?.addEventListener('click', closeModal);
   modalOverlay?.addEventListener('click', e => { if (e.target === modalOverlay) closeModal(); });
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+  // Keyboard: Escape closes, arrows navigate gallery
+  document.addEventListener('keydown', e => {
+    if (!modalOverlay?.classList.contains('open')) return;
+    if (e.key === 'Escape')      closeModal();
+    if (e.key === 'ArrowLeft')   galleryGo(-1);
+    if (e.key === 'ArrowRight')  galleryGo(1);
+  });
+
+  // Touch swipe support on the image area
+  const imgArea = document.getElementById('modalImgArea');
+  imgArea?.addEventListener('touchstart', e => {
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+  }, { passive: true });
+  imgArea?.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    const dy = e.changedTouches[0].clientY - touchStartY;
+    if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 40) {
+      galleryGo(dx < 0 ? 1 : -1);
+    }
+  }, { passive: true });
+}
+
+function galleryGo(dir) {
+  if (galleryImages.length <= 1) return;
+  galleryIndex = (galleryIndex + dir + galleryImages.length) % galleryImages.length;
+  renderGalleryFrame();
+}
+
+function renderGalleryFrame() {
+  const img = document.getElementById('modalMainImg');
+  const dots = document.querySelectorAll('.gallery-dot');
+  const counter = document.getElementById('galleryCounter');
+  const prevBtn = document.getElementById('galleryPrev');
+  const nextBtn = document.getElementById('galleryNext');
+
+  if (!img) return;
+
+  // Fade transition
+  img.style.opacity = '0';
+  setTimeout(() => {
+    img.src = galleryImages[galleryIndex];
+    img.style.opacity = '1';
+  }, 150);
+
+  // Dots
+  dots.forEach((d, i) => d.classList.toggle('active', i === galleryIndex));
+
+  // Counter
+  if (counter) counter.textContent = `${galleryIndex + 1} / ${galleryImages.length}`;
+
+  // Arrow visibility
+  if (prevBtn) prevBtn.style.opacity = galleryImages.length > 1 ? '1' : '0';
+  if (nextBtn) nextBtn.style.opacity = galleryImages.length > 1 ? '1' : '0';
+}
+
+function buildGallery(images) {
+  const imgArea = document.getElementById('modalImgArea');
+  if (!images.length) {
+    imgArea.innerHTML = `<div class="modal-candle"></div>`;
+    return;
+  }
+
+  const multi = images.length > 1;
+
+  imgArea.innerHTML = `
+    <div class="gallery-wrap">
+      <img id="modalMainImg" src="${images[0]}"
+           alt="Product image"
+           style="width:100%;height:100%;object-fit:cover;display:block;transition:opacity 0.15s ease">
+      ${multi ? `
+        <button class="gallery-arrow gallery-prev" id="galleryPrev" aria-label="Previous image">
+          ${SVG.chevLeft}
+        </button>
+        <button class="gallery-arrow gallery-next" id="galleryNextBtn" aria-label="Next image">
+          ${SVG.chevRight}
+        </button>
+        <div class="gallery-dots" id="galleryDots">
+          ${images.map((_, i) => `<span class="gallery-dot${i===0?' active':''}"></span>`).join('')}
+        </div>
+        <div class="gallery-counter" id="galleryCounter">1 / ${images.length}</div>
+      ` : ''}
+    </div>`;
+
+  if (multi) {
+    document.getElementById('galleryPrev')
+      ?.addEventListener('click', e => { e.stopPropagation(); galleryGo(-1); });
+    document.getElementById('galleryNextBtn')
+      ?.addEventListener('click', e => { e.stopPropagation(); galleryGo(1); });
+
+    // Dot clicks
+    document.querySelectorAll('.gallery-dot').forEach((dot, i) => {
+      dot.addEventListener('click', e => { e.stopPropagation(); galleryIndex = i; renderGalleryFrame(); });
+    });
+
+    // Re-attach touch listeners on new content
+    const imgAreaEl = document.getElementById('modalImgArea');
+    imgAreaEl.addEventListener('touchstart', e => {
+      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
+    }, { passive: true });
+    imgAreaEl.addEventListener('touchend', e => {
+      const dx = e.changedTouches[0].clientX - touchStartX;
+      const dy = e.changedTouches[0].clientY - touchStartY;
+      if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 40) galleryGo(dx < 0 ? 1 : -1);
+    }, { passive: true });
+  }
 }
 
 function openModal(p) {
@@ -139,11 +271,10 @@ function openModal(p) {
     <div class="modal-detail"><strong>Wick</strong>${p.wick}</div>
     <div class="modal-detail"><strong>Scent Notes</strong>${p.notes}</div>`;
 
-  const imgArea = document.getElementById('modalImg');
-  const modalImgSrc = p.image ? BASE + p.image : '';
-  imgArea.innerHTML = modalImgSrc
-    ? `<img src="${modalImgSrc}" alt="${p.name}" style="width:100%;height:100%;object-fit:cover;display:block">`
-    : `<div class="modal-candle"></div>`;
+  // Build gallery
+  galleryImages = getProductImages(p);
+  galleryIndex  = 0;
+  buildGallery(galleryImages);
 
   // WhatsApp button
   const orderBtn = document.getElementById('modalOrderBtn');
@@ -164,7 +295,7 @@ function openModal(p) {
     orderBtn.onclick = null;
   }
 
-  // Amazon button — show only if amazonLink is set
+  // Amazon button
   const amazonBtn = document.getElementById('modalAmazonBtn');
   if (p.amazonLink) {
     amazonBtn.style.display = 'flex';
@@ -197,7 +328,7 @@ function injectModal() {
     <div class="modal-overlay" id="modal" role="dialog" aria-modal="true">
       <div class="modal">
         <button class="modal-close" id="modalClose" aria-label="Close">${SVG.close}</button>
-        <div class="modal-img-area" id="modalImg"></div>
+        <div class="modal-img-area" id="modalImgArea"></div>
         <div class="modal-body">
           <p class="modal-category" id="modalCategory"></p>
           <h2 class="modal-name" id="modalName"></h2>

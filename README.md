@@ -72,12 +72,30 @@ We recommend keeping **4–6 products** as featured so the homepage stays clean.
   wick: "Lead-free Cotton",
   notes: "Note 1 · Note 2 · Note 3",
   description: "Longer description shown in the detail popup.",
-  image: "images/your-photo.jpg",    // Put the photo in /images/ folder
+  image: "images/your-photo.jpg",    // Main image (also shown on card)
+  imageCount: 3,                     // Total images including main (see below)
   badge: "New",                      // "Best Seller" | "New" | "Premium" | "" for none
   featured: false,                   // true = appears on homepage
   inStock: true,                     // false = shows "Out of Stock"
+  amazonLink: "",                    // Amazon URL or "" to hide button
 },
 ```
+
+---
+
+## 🖼️ Multiple Images per Product (Gallery)
+
+The popup supports a swipeable image gallery. Set `imageCount` to how many images the product has, then name the extra files with `-1`, `-2`, etc.
+
+**Example:** `imageCount: 4` with `image: "images/rose-bloom.jpg"` expects:
+```
+images/rose-bloom.jpg       ← main image (also shown on product card)
+images/rose-bloom-1.jpg     ← gallery image 2
+images/rose-bloom-2.jpg     ← gallery image 3
+images/rose-bloom-3.jpg     ← gallery image 4
+```
+
+Users can swipe left/right on mobile, click the ‹ › arrows, click the dots, or use keyboard arrow keys to navigate. Set `imageCount: 1` (or omit it) for products with only one photo.
 
 ---
 

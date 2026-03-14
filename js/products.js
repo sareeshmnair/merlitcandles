@@ -21,8 +21,13 @@
  *  wick       — wick type
  *  notes      — scent notes e.g. "Vanilla · Sandalwood · Amber"
  *  description— longer paragraph shown in detail modal
- *  image      — path relative to site root e.g. "images/vanilla-dusk.jpg"
+ *  image      — path of the MAIN image e.g. "images/vanilla-dusk.jpg"
  *               use "" to show the default candle placeholder
+ *  imageCount — number of images for this product (including the main one).
+ *               Extra images must be named: vanilla-dusk-1.jpg, vanilla-dusk-2.jpg, etc.
+ *               Set to 1 (or omit) if there is only one image.
+ *               Example: image="images/vanilla-dusk.jpg", imageCount=3
+ *                        → loads vanilla-dusk.jpg, vanilla-dusk-1.jpg, vanilla-dusk-2.jpg
  *  badge      — optional label: "Best Seller" | "New" | "Premium" | "" for none
  *  amazonLink — optional Amazon product URL. If set, a "View on Amazon" button
  *               appears in the popup. Leave as "" to hide the button.
@@ -58,10 +63,11 @@ const PRODUCTS = [
     notes: "Vanilla · Sandalwood · Amber",
     description: "A comforting blend of creamy Madagascar vanilla and warm sandalwood that wraps you in a cosy, familiar embrace. Perfect for evenings and quiet moments at home.",
     image: "images/vanilla-dusk.jpg",
+    imageCount: 4,   // ← has vanilla-dusk.jpg + vanilla-dusk-1.jpg + vanilla-dusk-2.jpg
     badge: "Best Seller",
     featured: true,
     inStock: true,
-    amazonLink: "https://www.google.com",   // ← Paste your Amazon product URL here, or leave "" to hide
+    amazonLink: "",
   },
   {
     id: 2,
@@ -76,10 +82,11 @@ const PRODUCTS = [
     notes: "Lavender · Eucalyptus · Musk",
     description: "A serene lavender escape inspired by sun-drenched Provençal fields. Layered with soft musk and a breath of eucalyptus for a clean, calming atmosphere.",
     image: "images/lavender-mist.jpg",
+    imageCount: 1,   // ← only one image, no gallery shown
     badge: "",
     featured: true,
     inStock: true,
-    amazonLink: "https://www.google.com",
+    amazonLink: "",
   },
   {
     id: 3,
@@ -97,7 +104,6 @@ const PRODUCTS = [
     badge: "New",
     featured: true,
     inStock: true,
-    amazonLink: "https://www.google.com",
   },
   {
     id: 4,
@@ -132,7 +138,6 @@ const PRODUCTS = [
     badge: "",
     featured: false,
     inStock: true,
-    amazonLink: "https://www.google.com",
   },
   {
     id: 6,
@@ -150,7 +155,6 @@ const PRODUCTS = [
     badge: "",
     featured: false,
     inStock: true,
-    amazonLink: "https://www.google.com",
   },
   {
     id: 7,
@@ -168,7 +172,6 @@ const PRODUCTS = [
     badge: "Seasonal",
     featured: false,
     inStock: true,
-    amazonLink: "https://www.google.com",
   },
   {
     id: 8,
@@ -186,6 +189,5 @@ const PRODUCTS = [
     badge: "",
     featured: false,
     inStock: false,
-    amazonLink: "https://www.google.com",
   },
 ];
