@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MyCandle — Handcrafted with Love</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: grid; grid-template-columns: 1fr 1fr; align-items: center;
+      padding: 8rem 4rem 4rem; position: relative; overflow: hidden;
+    }
+    .hero-bg-circle {
+      position: absolute; right: -8%; top: 50%; transform: translateY(-50%);
+      width: 52vw; height: 52vw; border-radius: 50%;
+      background: radial-gradient(circle, #e8ddd0 0%, #d4c4b0 60%, transparent 80%);
+      opacity: 0.5; z-index: 0;
+    }
+    .hero-content { position: relative; z-index: 1; }
+    .hero-eyebrow {
+      font-size: 0.72rem; letter-spacing: 0.25em; text-transform: uppercase;
+      color: var(--ember); margin-bottom: 1.2rem; font-weight: 500;
+      display: flex; align-items: center; gap: 0.8rem;
+    }
+    .hero-eyebrow::before { content: ''; width: 30px; height: 1px; background: var(--ember); display: block; }
+    .hero h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3rem, 5.5vw, 5.5rem);
+      font-weight: 300; line-height: 1.08; color: var(--deep); margin-bottom: 1.6rem;
+    }
+    .hero h1 em { font-style: italic; color: var(--ember); }
+    .hero-desc { font-size: 0.95rem; color: var(--light-text); line-height: 1.9; max-width: 420px; margin-bottom: 2.4rem; font-weight: 300; }
+    .hero-cta {
+      display: inline-flex; align-items: center; gap: 0.8rem;
+      background: var(--deep); color: var(--cream);
+      padding: 0.9rem 2rem; font-size: 0.8rem; letter-spacing: 0.12em;
+      text-transform: uppercase; font-weight: 500;
+      transition: background 0.3s, transform 0.2s;
+    }
+    .hero-cta:hover { background: var(--ember); transform: translateX(4px); }
+    .hero-cta svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; transition: transform 0.2s; }
+    .hero-cta:hover svg { transform: translateX(4px); }
+    .hero-image-area { position: relative; z-index: 1; display: flex; justify-content: center; }
+    .hero-candle-mockup {
+      width: 330px; height: 450px;
+      background: linear-gradient(145deg, #f5ede0, #e8d8c4);
+      border-radius: 4px 4px 40px 40px; position: relative;
+      box-shadow: 0 30px 80px rgba(46,31,20,0.18);
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: flex-end; padding-bottom: 2rem; overflow: hidden;
+    }
+    .hero-candle-mockup::before {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(180deg, rgba(201,153,58,0.1) 0%, transparent 60%);
+    }
+    .candle-wick { position: absolute; top: 15%; left: 50%; transform: translateX(-50%); width: 2px; height: 40px; background: var(--deep); border-radius: 1px; }
+    .candle-flame {
+      position: absolute; top: 8%; left: 50%; transform: translateX(-50%);
+      width: 14px; height: 22px;
+      background: radial-gradient(ellipse at 50% 80%, #fff700, #ff8c00, #c4622d);
+      border-radius: 50% 50% 30% 30%;
+      animation: flicker 2.2s ease-in-out infinite alternate;
+      filter: blur(0.5px); box-shadow: 0 0 18px 6px rgba(196,98,45,0.35);
+    }
+    .hero-candle-label { font-family: 'Cormorant Garamond', serif; font-size: 1rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--brown); text-align: center; }
+    .hero-candle-label small { display: block; font-size: 0.65rem; color: var(--taupe); margin-top: 0.2rem; letter-spacing: 0.15em; }
+    .hero-badges { display: flex; gap: 2.5rem; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--sand); }
+    .hero-badge strong { display: block; font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; font-weight: 600; color: var(--deep); }
+    .hero-badge span { font-size: 0.72rem; letter-spacing: 0.1em; color: var(--light-text); text-transform: uppercase; }
+
+    /* ── FEATURED ── */
+    #featured { padding: 7rem 4rem; }
+    .featured-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 2rem; }
+
+    /* ── VIEW ALL BANNER ── */
+    .view-all-banner {
+      text-align: center; margin-top: 3.5rem;
+      display: flex; flex-direction: column; align-items: center; gap: 1.2rem;
+    }
+    .view-all-banner p { font-size: 0.88rem; color: var(--light-text); }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 0.7rem;
+      background: var(--deep); color: var(--cream);
+      padding: 0.85rem 2rem; font-size: 0.8rem; letter-spacing: 0.12em;
+      text-transform: uppercase; font-weight: 500;
+      transition: background 0.3s;
+    }
+    .btn-primary:hover { background: var(--ember); }
+    .btn-primary svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 2; }
+
+    @media (max-width: 768px) {
+      .hero { grid-template-columns: 1fr; padding: 7rem 1.5rem 4rem; }
+      .hero-image-area { display: none; }
+      #featured { padding: 5rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav id="main-nav"></nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg-circle"></div>
+    <div class="hero-content fade-up">
+      <p class="hero-eyebrow">Handcrafted Candles</p>
+      <h1>Warm your world<br/>with <em>pure scent</em><br/>&amp; soft light.</h1>
+      <p class="hero-desc">Each candle is lovingly hand-poured with natural soy wax, premium fragrance oils, and a lead-free cotton wick — crafted to fill your space with warmth and calm.</p>
+      <a href="pages/shop.html" class="hero-cta">
+        Explore Collection
+        <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <div class="hero-badges">
+        <div class="hero-badge"><strong>100%</strong><span>Natural Soy</span></div>
+        <div class="hero-badge"><strong>40+</strong><span>Scents</span></div>
+        <div class="hero-badge"><strong>50hr</strong><span>Burn Time</span></div>
+      </div>
+    </div>
+    <div class="hero-image-area fade-up" style="transition-delay:0.2s">
+      <div class="hero-candle-mockup">
+        <div class="candle-flame"></div>
+        <div class="candle-wick"></div>
+        <div class="hero-candle-label">Signature Collection<small>mycandle.com</small></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURED PRODUCTS -->
+  <section id="featured">
+    <div class="section-header fade-up">
+      <p class="section-eyebrow">Handpicked for You</p>
+      <h2 class="section-title">Featured Products</h2>
+      <p class="section-subtitle">Our most-loved candles, loved by customers.</p>
+    </div>
+    <div class="featured-grid" id="featuredGrid"></div>
+    <div class="view-all-banner fade-up">
+      <p>We carry over 100 unique scents across 8 collections.</p>
+      <a href="pages/shop.html" class="btn-primary">
+        Browse Full Collection
+        <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="about-strip" id="about">
+    <div class="fade-up">
+      <h2>Every candle tells a <em>story</em> of care &amp; craft.</h2>
+      <p>We believe a great candle does more than scent a room — it sets a mood, marks a moment, and becomes a ritual. That's why every MyCandle product is made by hand in small batches, using only the finest natural ingredients.</p>
+    </div>
+    <div class="about-features fade-up" style="transition-delay:0.2s">
+      <div class="about-feature"><div class="about-feature-icon">🌿</div><div class="about-feature-text"><strong>Natural Soy Wax</strong><span>Clean-burning, sustainable, and longer-lasting than paraffin.</span></div></div>
+      <div class="about-feature"><div class="about-feature-icon">🕯️</div><div class="about-feature-text"><strong>Hand-Poured in Small Batches</strong><span>Each candle receives individual care and quality attention.</span></div></div>
+      <div class="about-feature"><div class="about-feature-icon">🌸</div><div class="about-feature-text"><strong>Premium Fragrance Oils</strong><span>Sourced from trusted suppliers for rich, true-to-life scents.</span></div></div>
+      <div class="about-feature"><div class="about-feature-icon">🎁</div><div class="about-feature-text"><strong>Perfect for Gifting</strong><span>Beautiful packaging makes every candle a ready-to-gift treasure.</span></div></div>
+    </div>
+  </section>
+
+  <footer id="main-footer"></footer>
+
+  <script src="js/products.js"></script>
+  <script src="js/ui.js"></script>
+  <script>
+    injectNav('home');
+    injectFooter();
+    injectModal();
+    initModal();
+    initScrollAnimations();
+
+    // Render featured products
+    const grid = document.getElementById('featuredGrid');
+    const featured = PRODUCTS.filter(p => p.featured);
+    featured.forEach((p, i) => {
+      const card = document.createElement('div');
+      card.className = 'product-card fade-up';
+      card.style.transitionDelay = `${i * 0.08}s`;
+      card.innerHTML = productCardHTML(p);
+      card.addEventListener('click', () => openModal(p));
+      grid.appendChild(card);
+    });
+  </script>
+</body>
+</html>
