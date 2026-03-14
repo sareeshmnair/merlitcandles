@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Merlit Candle — Handcrafted with Love</title>
+  <title>MyCandle — Handcrafted with Love</title>
   <link rel="stylesheet" href="css/style.css" />
   <style>
     /* ── HERO ── */
@@ -167,9 +167,8 @@
     injectFooter();
     injectModal();
     initModal();
-    initScrollAnimations();
 
-    // Render featured products
+    // Render featured products FIRST, then init scroll animations
     const grid = document.getElementById('featuredGrid');
     const featured = PRODUCTS.filter(p => p.featured);
     featured.forEach((p, i) => {
@@ -180,6 +179,9 @@
       card.addEventListener('click', () => openModal(p));
       grid.appendChild(card);
     });
+
+    // Must run AFTER cards are in DOM so IntersectionObserver can detect them
+    initScrollAnimations();
   </script>
 </body>
 </html>

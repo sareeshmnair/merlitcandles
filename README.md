@@ -35,7 +35,29 @@ mycandle/
 
 Open **`js/products.js`** — this is your product database.
 
-To add a new product, copy this block and paste it at the end of the `PRODUCTS` array:
+### Marking a product as Featured (shown on Homepage)
+
+Set `featured: true` on any product and it will appear in the **"Featured Products"** section on the homepage. Set `featured: false` to keep it only in the shop page.
+
+```js
+{
+  id: 1,
+  name: "Vanilla Dusk",
+  featured: true,   // ✅ Shows on homepage AND shop page
+  ...
+}
+
+{
+  id: 5,
+  name: "Forest Rain",
+  featured: false,  // Only appears in the shop page
+  ...
+}
+```
+
+We recommend keeping **4–6 products** as featured so the homepage stays clean.
+
+### To add a new product, copy this block:
 
 ```js
 {

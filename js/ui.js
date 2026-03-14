@@ -23,6 +23,7 @@ const SVG = {
   empty: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M8 15s1.5-2 4-2 4 2 4 2M9 9h.01M15 9h.01"/></svg>`,
   hamburger: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>`,
   menuClose: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`,
+  amazon: `<svg viewBox="0 0 24 24" fill="currentColor" width="15" height="15"><path d="M13.958 10.09c0 1.232.029 2.256-.591 3.351-.502.891-1.301 1.438-2.186 1.438-1.214 0-1.922-.924-1.922-2.292 0-2.692 2.415-3.182 4.699-3.182v.685zm3.186 7.705c-.209.189-.512.201-.745.076-1.047-.872-1.234-1.276-1.814-2.106-1.734 1.767-2.962 2.297-5.209 2.297-2.66 0-4.731-1.641-4.731-4.925 0-2.565 1.391-4.309 3.37-5.164 1.715-.754 4.11-.891 5.942-1.099v-.41c0-.753.06-1.642-.384-2.294-.385-.577-1.124-.816-1.776-.816-1.208 0-2.284.62-2.548 1.905-.054.285-.261.567-.549.582l-3.061-.333c-.259-.056-.547-.266-.472-.66C5.348 2.062 8.392 1 11.11 1c1.39 0 3.21.37 4.31 1.424C16.76 3.765 16.62 5.558 16.62 7.5v5.082c0 1.527.633 2.198 1.229 3.023.21.294.255.646-.01.865l-2.695 2.325zm3.612 1.854c-2.148 1.594-5.261 2.44-7.941 2.44-3.757 0-7.138-1.389-9.696-3.697-.201-.182-.021-.43.22-.288 2.762 1.608 6.18 2.576 9.708 2.576 2.38 0 4.997-.493 7.405-1.517.364-.153.669.239.304.486zm.869-1.483c-.273-.351-1.815-.166-2.507-.083-.209.024-.241-.158-.053-.291 1.226-.863 3.241-.614 3.476-.325.234.291-.062 2.314-1.213 3.278-.176.149-.344.069-.266-.125.26-.649.838-2.103.563-2.454z"/></svg>`,
 };
 
 /* ── INJECT NAV ── */
@@ -53,7 +54,7 @@ function injectNav(activePage) {
         <a href="https://wa.me/${WHATSAPP_NUMBER}" target="_blank" aria-label="WhatsApp">${SVG.whatsapp}</a>
         <a href="https://facebook.com/YOUR_PAGE" target="_blank" aria-label="Facebook">${SVG.facebook}</a>
       </div>
-      <button class="hamburger" id="hamburger" aria-label="Toggle menu">${SVG.hamburger}</button>
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu" style="position:relative;z-index:300">${SVG.hamburger}</button>
     </div>`;
 
   // Hamburger toggle
@@ -137,12 +138,17 @@ function openModal(p) {
     <div class="modal-detail"><strong>Wax</strong>${p.wax}</div>
     <div class="modal-detail"><strong>Wick</strong>${p.wick}</div>
     <div class="modal-detail"><strong>Scent Notes</strong>${p.notes}</div>`;
+
   const imgArea = document.getElementById('modalImg');
   const modalImgSrc = p.image ? BASE + p.image : '';
   imgArea.innerHTML = modalImgSrc
-    ? `<img src="${modalImgSrc}" alt="${p.name}" style="width:100%;height:100%;object-fit:cover">`
+    ? `<img src="${modalImgSrc}" alt="${p.name}" style="width:100%;height:100%;object-fit:cover;display:block">`
     : `<div class="modal-candle"></div>`;
+
+  // WhatsApp button
   const orderBtn = document.getElementById('modalOrderBtn');
+  orderBtn.style.opacity = '';
+  orderBtn.style.cursor = '';
   if (p.inStock) {
     orderBtn.disabled = false;
     orderBtn.innerHTML = `${SVG.cart} Order via WhatsApp`;
@@ -153,9 +159,20 @@ function openModal(p) {
   } else {
     orderBtn.disabled = true;
     orderBtn.innerHTML = `Currently Out of Stock`;
-    orderBtn.style.opacity = '0.5';
+    orderBtn.style.opacity = '0.45';
     orderBtn.style.cursor = 'not-allowed';
+    orderBtn.onclick = null;
   }
+
+  // Amazon button — show only if amazonLink is set
+  const amazonBtn = document.getElementById('modalAmazonBtn');
+  if (p.amazonLink) {
+    amazonBtn.style.display = 'flex';
+    amazonBtn.onclick = () => window.open(p.amazonLink, '_blank');
+  } else {
+    amazonBtn.style.display = 'none';
+  }
+
   modalOverlay.classList.add('open');
   document.body.style.overflow = 'hidden';
 }
@@ -190,7 +207,12 @@ function injectModal() {
           </div>
           <p class="modal-desc" id="modalDesc"></p>
           <div class="modal-details" id="modalDetails"></div>
-          <button class="modal-order-btn" id="modalOrderBtn"></button>
+          <div class="modal-actions">
+            <button class="modal-order-btn" id="modalOrderBtn"></button>
+            <a class="modal-amazon-btn" id="modalAmazonBtn" target="_blank" rel="noopener" style="display:none">
+              ${SVG.amazon} View on Amazon
+            </a>
+          </div>
         </div>
       </div>
     </div>`;

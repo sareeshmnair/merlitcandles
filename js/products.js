@@ -24,6 +24,9 @@
  *  image      — path relative to site root e.g. "images/vanilla-dusk.jpg"
  *               use "" to show the default candle placeholder
  *  badge      — optional label: "Best Seller" | "New" | "Premium" | "" for none
+ *  amazonLink — optional Amazon product URL. If set, a "View on Amazon" button
+ *               appears in the popup. Leave as "" to hide the button.
+ *               e.g. "https://amazon.com/dp/XXXXXXXXXX"
  *  featured   — true = appears on homepage featured section
  *  inStock    — true/false
  * ============================================================
@@ -58,6 +61,7 @@ const PRODUCTS = [
     badge: "Best Seller",
     featured: true,
     inStock: true,
+    amazonLink: "",   // ← Paste your Amazon product URL here, or leave "" to hide
   },
   {
     id: 2,
@@ -75,6 +79,7 @@ const PRODUCTS = [
     badge: "",
     featured: true,
     inStock: true,
+    amazonLink: "",
   },
   {
     id: 3,
