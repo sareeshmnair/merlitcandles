@@ -62,36 +62,14 @@
   <script src="../js/products.js"></script>
   <script src="../js/ui.js"></script>
   <script>
-    // Fix asset paths since we're in /pages/ subfolder
-    const BASE = '../';
-
     injectNav('shop');
     injectFooter();
     injectModal();
     initModal();
     initScrollAnimations();
 
-    // Override productCardHTML image path for /pages/ subfolder
-    function cardHTML(p) {
-      const imgSrc = p.image ? BASE + p.image : '';
-      const imgContent = imgSrc
-        ? `<img src="${imgSrc}" alt="${p.name}" loading="lazy">`
-        : `<div class="product-img-placeholder"><div class="placeholder-candle"></div></div>`;
-      const badgeHTML = !p.inStock
-        ? `<span class="product-badge badge-out">Out of Stock</span>`
-        : p.badge ? `<span class="product-badge">${p.badge}</span>` : '';
-      return `
-        <div class="product-img-wrap">${imgContent}${badgeHTML}</div>
-        <div class="product-info">
-          <p class="product-category">${p.category}</p>
-          <h3 class="product-name">${p.name}</h3>
-          <p class="product-scent">${p.scent}</p>
-          <div class="product-footer">
-            <span class="product-price">${p.price}</span>
-            <button class="product-view-btn">View ${SVG.arrow}</button>
-          </div>
-        </div>`;
-    }
+    // Use shared productCardHTML from ui.js (BASE path is auto-detected)
+    const cardHTML = productCardHTML;
 
     // ── STATE ──
     const ITEMS_PER_PAGE = 12;
