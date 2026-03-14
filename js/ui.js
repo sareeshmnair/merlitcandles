@@ -5,6 +5,12 @@
 
 const WHATSAPP_NUMBER = "601234567890"; // ← Replace with your WhatsApp number (no + or spaces)
 
+/* ── BASE PATH ──
+   Automatically detects whether we are in /pages/ subfolder
+   and builds correct relative paths for links and images.      */
+const IS_SUBPAGE = window.location.pathname.includes('/pages/');
+const BASE = IS_SUBPAGE ? '../' : './';
+
 /* ── SOCIAL SVGs ── */
 const SVG = {
   instagram: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>`,
@@ -14,19 +20,32 @@ const SVG = {
   close: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`,
   search: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>`,
   cart: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>`,
-  empty: `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 12h8M12 8v8"/></svg>`,
+  empty: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M8 15s1.5-2 4-2 4 2 4 2M9 9h.01M15 9h.01"/></svg>`,
+  hamburger: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>`,
+  menuClose: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`,
 };
 
 /* ── INJECT NAV ── */
 function injectNav(activePage) {
   const nav = document.getElementById('main-nav');
   if (!nav) return;
+
+  // Build correct paths depending on whether we are in /pages/ or root
+  const homeHref  = `${BASE}index.html`;
+  const shopHref  = `${BASE}pages/shop.html`;
+  const aboutHref = `${BASE}index.html#about`;
+
   nav.innerHTML = `
-    <a href="index.html" class="nav-logo">My<span>Candle</span></a>
-    <ul class="nav-links">
-      <li><a href="index.html" ${activePage === 'home' ? 'class="active"' : ''}>Home</a></li>
-      <li><a href="pages/shop.html" ${activePage === 'shop' ? 'class="active"' : ''}>Shop</a></li>
-      <li><a href="index.html#about" ${activePage === 'about' ? 'class="active"' : ''}>About</a></li>
+    <a href="${homeHref}" class="nav-logo">My<span>Candle</span></a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="${homeHref}"  ${activePage === 'home'  ? 'class="active"' : ''}>Home</a></li>
+      <li><a href="${shopHref}"  ${activePage === 'shop'  ? 'class="active"' : ''}>Shop</a></li>
+      <li><a href="${aboutHref}" ${activePage === 'about' ? 'class="active"' : ''}>About</a></li>
+      <li class="nav-social-mobile">
+        <a href="https://instagram.com/YOUR_USERNAME" target="_blank" aria-label="Instagram">${SVG.instagram}</a>
+        <a href="https://wa.me/${WHATSAPP_NUMBER}" target="_blank" aria-label="WhatsApp">${SVG.whatsapp}</a>
+        <a href="https://facebook.com/YOUR_PAGE" target="_blank" aria-label="Facebook">${SVG.facebook}</a>
+      </li>
     </ul>
     <div class="nav-right">
       <div class="nav-social">
@@ -34,7 +53,26 @@ function injectNav(activePage) {
         <a href="https://wa.me/${WHATSAPP_NUMBER}" target="_blank" aria-label="WhatsApp">${SVG.whatsapp}</a>
         <a href="https://facebook.com/YOUR_PAGE" target="_blank" aria-label="Facebook">${SVG.facebook}</a>
       </div>
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu">${SVG.hamburger}</button>
     </div>`;
+
+  // Hamburger toggle
+  const hamburger = document.getElementById('hamburger');
+  const navLinks  = document.getElementById('navLinks');
+  hamburger.addEventListener('click', () => {
+    const open = navLinks.classList.toggle('open');
+    hamburger.innerHTML = open ? SVG.menuClose : SVG.hamburger;
+    document.body.style.overflow = open ? 'hidden' : '';
+  });
+  // Close menu when a link is clicked
+  navLinks.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+      navLinks.classList.remove('open');
+      hamburger.innerHTML = SVG.hamburger;
+      document.body.style.overflow = '';
+    });
+  });
+
   window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 20));
 }
 
@@ -57,8 +95,9 @@ function injectFooter() {
 
 /* ── PRODUCT CARD HTML ── */
 function productCardHTML(p) {
-  const imgContent = p.image
-    ? `<img src="${p.image}" alt="${p.name}" loading="lazy">`
+  const imgSrc = p.image ? BASE + p.image : '';
+  const imgContent = imgSrc
+    ? `<img src="${imgSrc}" alt="${p.name}" loading="lazy">`
     : `<div class="product-img-placeholder"><div class="placeholder-candle"></div></div>`;
   const badgeHTML = !p.inStock
     ? `<span class="product-badge badge-out">Out of Stock</span>`
@@ -99,8 +138,9 @@ function openModal(p) {
     <div class="modal-detail"><strong>Wick</strong>${p.wick}</div>
     <div class="modal-detail"><strong>Scent Notes</strong>${p.notes}</div>`;
   const imgArea = document.getElementById('modalImg');
-  imgArea.innerHTML = p.image
-    ? `<img src="${p.image}" alt="${p.name}" style="width:100%;height:100%;object-fit:cover">`
+  const modalImgSrc = p.image ? BASE + p.image : '';
+  imgArea.innerHTML = modalImgSrc
+    ? `<img src="${modalImgSrc}" alt="${p.name}" style="width:100%;height:100%;object-fit:cover">`
     : `<div class="modal-candle"></div>`;
   const orderBtn = document.getElementById('modalOrderBtn');
   if (p.inStock) {
