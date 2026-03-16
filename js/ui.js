@@ -3,7 +3,7 @@
    Nav scroll effect, modal, social SVGs, scroll animations
    ============================================================ */
 
-const WHATSAPP_NUMBER = "601234567890"; // ← Replace with your WhatsApp number (no + or spaces)
+const WHATSAPP_NUMBER = "9037038214"; // ← Replace with your WhatsApp number (no + or spaces)
 
 /* ── BASE PATH ──
    Automatically detects whether we are in /pages/ subfolder
@@ -90,7 +90,7 @@ function injectFooter() {
     </div>
     <p class="footer-copy">© ${new Date().getFullYear()} Merlit Candle. All rights reserved.</p>
     <div class="footer-social">
-      <a href="https://instagram.com/YOUR_USERNAME" target="_blank" aria-label="Instagram">${SVG.instagram}</a>
+      <a href="https://instagram.com/merlitcandles" target="_blank" aria-label="Instagram">${SVG.instagram}</a>
       <a href="https://wa.me/${WHATSAPP_NUMBER}" target="_blank" aria-label="WhatsApp">${SVG.whatsapp}</a>
       <a href="https://facebook.com/YOUR_PAGE" target="_blank" aria-label="Facebook">${SVG.facebook}</a>
     </div>`;
