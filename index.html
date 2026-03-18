@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Merlit Candle — Handcrafted with Love</title>
+  <title>Merlit Candles — Hand-Poured, Made with Love</title>
   <link rel="stylesheet" href="css/style.css" />
   <style>
     /* ── HERO ── */
@@ -122,7 +122,7 @@
       <div class="hero-candle-mockup">
         <div class="candle-flame"></div>
         <div class="candle-wick"></div>
-        <div class="hero-candle-label">Signature Collection<small>mycandle.com</small></div>
+        <div class="hero-candle-label">Merlit Candles<small>Made with Love</small></div>
       </div>
     </div>
   </section>
@@ -145,6 +145,17 @@
   </section>
 
   <!-- ABOUT -->
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="testimonials-section" id="testimonials">
+    <div class="section-header fade-up">
+      <p class="section-eyebrow">Customer Love</p>
+      <h2 class="section-title" style="color:var(--cream)">What our customers say</h2>
+    </div>
+    <div id="testimonialsCarousel"></div>
+  </section>
+
   <section class="about-strip" id="about">
     <div class="fade-up">
       <h2>Every candle tells a <em>story</em> of care &amp; craft.</h2>
@@ -161,6 +172,7 @@
   <footer id="main-footer"></footer>
 
   <script src="js/products.js"></script>
+  <script src="js/testimonials.js"></script>
   <script src="js/ui.js"></script>
   <script>
     injectNav('home');
@@ -182,6 +194,7 @@
 
     // Must run AFTER cards are in DOM so IntersectionObserver can detect them
     initScrollAnimations();
+    injectTestimonials("testimonialsCarousel");
   </script>
 </body>
 </html>

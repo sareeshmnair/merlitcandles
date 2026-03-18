@@ -507,3 +507,142 @@ footer {
   footer { flex-direction: column; text-align: center; padding: 2.5rem 1.5rem; }
   .footer-social { justify-content: center; }
 }
+
+/* ============================================================
+   MERLIT CANDLES — Additional styles
+   Logo, WhatsApp pill, testimonials, updated footer/nav
+   ============================================================ */
+
+/* ── LOGO ── */
+.nav-logo-wrap { display:flex; align-items:center; text-decoration:none; }
+.logo-text-fallback {
+  font-family:'Cormorant Garamond',serif; font-size:1.5rem; font-weight:600;
+  color:var(--deep); letter-spacing:0.03em;
+}
+.logo-text-fallback em { font-style:italic; color:var(--ember); }
+
+/* ── NAV WHATSAPP PILL ── */
+.nav-whatsapp-pill {
+  display:flex; align-items:center; gap:0.45rem;
+  background:var(--ember); color:white;
+  padding:0.42rem 0.9rem; border-radius:20px;
+  font-size:0.75rem; font-weight:500; letter-spacing:0.04em;
+  text-decoration:none; white-space:nowrap;
+  transition:background var(--transition), transform var(--transition);
+}
+.nav-whatsapp-pill:hover { background:#a84f22; transform:translateY(-1px); }
+.nav-whatsapp-pill svg { width:15px; height:15px; fill:white; flex-shrink:0; }
+
+/* ── MOBILE PHONE LINK IN DRAWER ── */
+.nav-phone-mobile {
+  display:flex; align-items:center; justify-content:center; gap:0.5rem;
+  font-size:0.85rem; font-weight:500; color:var(--ember) !important;
+  padding:0.8rem 0; border-top:1px solid var(--sand); margin-top:0.5rem; width:100%;
+}
+.nav-phone-mobile svg { width:16px; height:16px; fill:none; stroke:var(--ember); }
+
+/* ── FOOTER REBRAND ── */
+footer {
+  background:#1c1008; color:rgba(250,246,240,0.5);
+  padding:3rem 4rem;
+  display:grid; grid-template-columns:1fr 1fr 1fr;
+  align-items:start; gap:2rem;
+}
+.footer-brand { display:flex; flex-direction:column; gap:0.5rem; }
+.footer-logo-wrap { display:inline-flex; }
+.footer-tagline { font-size:0.75rem; color:rgba(250,246,240,0.5); letter-spacing:0.05em; }
+.footer-domain  { font-size:0.72rem; color:var(--ember); letter-spacing:0.05em; }
+
+.footer-contact { display:flex; flex-direction:column; gap:0.7rem; }
+.footer-contact-label { font-size:0.68rem; text-transform:uppercase; letter-spacing:0.15em; color:var(--taupe); margin-bottom:0.2rem; }
+.footer-contact-link {
+  display:flex; align-items:center; gap:0.55rem;
+  font-size:0.8rem; color:rgba(250,246,240,0.65); text-decoration:none;
+  transition:color var(--transition);
+}
+.footer-contact-link:hover { color:var(--ember); }
+.footer-contact-link svg { width:15px; height:15px; fill:currentColor; flex-shrink:0; }
+
+.footer-right { display:flex; flex-direction:column; align-items:flex-end; gap:1rem; }
+.footer-copy  { font-size:0.72rem; text-align:right; }
+.footer-social { display:flex; gap:0.8rem; }
+.footer-social a {
+  width:36px; height:36px; border:1px solid rgba(250,246,240,0.12);
+  display:flex; align-items:center; justify-content:center;
+  color:rgba(250,246,240,0.5); transition:all var(--transition);
+}
+.footer-social a:hover { background:var(--ember); border-color:var(--ember); color:white; transform:translateY(-2px); }
+.footer-social svg { width:15px; height:15px; fill:currentColor; }
+
+/* ── TESTIMONIALS SECTION ── */
+.testimonials-section {
+  padding:7rem 4rem; background:var(--deep); overflow:hidden;
+}
+.testimonials-section .section-eyebrow { color:var(--gold); }
+.testimonials-section .section-eyebrow::before,
+.testimonials-section .section-eyebrow::after { background:var(--gold); }
+.testimonials-section .section-title { color:var(--cream); }
+
+.testi-track-wrap {
+  overflow:hidden; margin:0 -1rem; padding:0 1rem;
+}
+.testi-track {
+  display:flex; transition:transform 0.55s cubic-bezier(0.4,0,0.2,1);
+}
+.testi-card {
+  min-width:100%; padding:2.5rem; box-sizing:border-box;
+  background:rgba(255,255,255,0.04); border:1px solid rgba(201,153,58,0.15);
+  margin:0 0.5rem; border-radius:2px;
+}
+.testi-stars { display:flex; gap:2px; margin-bottom:1.2rem; }
+.testi-stars svg { width:14px; height:14px; }
+.testi-text {
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.25rem; font-weight:300; font-style:italic;
+  color:rgba(250,246,240,0.9); line-height:1.7; margin-bottom:1.8rem;
+}
+.testi-author { display:flex; align-items:center; gap:1rem; }
+.testi-avatar {
+  width:48px; height:48px; border-radius:50%; flex-shrink:0;
+  background:linear-gradient(135deg,var(--ember),var(--gold));
+  display:flex; align-items:center; justify-content:center;
+  font-size:0.85rem; font-weight:600; color:white; letter-spacing:0.05em;
+}
+.testi-avatar-img { width:48px; height:48px; border-radius:50%; object-fit:cover; flex-shrink:0; }
+.testi-name { display:block; font-size:0.88rem; font-weight:500; color:var(--cream); }
+.testi-loc  { display:block; font-size:0.75rem; color:var(--taupe); margin-top:0.15rem; }
+
+.testi-controls {
+  display:flex; align-items:center; justify-content:center;
+  gap:1.2rem; margin-top:2rem;
+}
+.testi-btn {
+  width:38px; height:38px; border:1px solid rgba(201,153,58,0.3);
+  background:none; cursor:pointer; color:var(--taupe);
+  display:flex; align-items:center; justify-content:center;
+  transition:all var(--transition); border-radius:50%;
+}
+.testi-btn:hover { border-color:var(--gold); color:var(--gold); }
+.testi-btn svg { width:16px; height:16px; }
+.testi-dots { display:flex; gap:0.5rem; }
+.testi-dot {
+  width:6px; height:6px; border-radius:50%;
+  background:rgba(201,153,58,0.3); cursor:pointer;
+  transition:all var(--transition);
+}
+.testi-dot.active { background:var(--gold); transform:scale(1.4); }
+
+/* ── RESPONSIVE UPDATES ── */
+@media (max-width:1024px) {
+  .nav-whatsapp-pill span { display:none; }
+  .nav-whatsapp-pill { padding:0.42rem 0.6rem; }
+}
+@media (max-width:768px) {
+  .nav-whatsapp-pill { display:none; }
+  footer { grid-template-columns:1fr; padding:3rem 1.5rem; gap:2rem; }
+  .footer-right { align-items:flex-start; }
+  .footer-copy { text-align:left; }
+  .testimonials-section { padding:5rem 1.5rem; }
+  .testi-card { padding:1.8rem 1.4rem; }
+  .testi-text { font-size:1.05rem; }
+}

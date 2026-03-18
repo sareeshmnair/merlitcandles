@@ -63,11 +63,11 @@ const PRODUCTS = [
     notes: "Vanilla · Sandalwood · Amber",
     description: "A comforting blend of creamy Madagascar vanilla and warm sandalwood that wraps you in a cosy, familiar embrace. Perfect for evenings and quiet moments at home.",
     image: "images/vanilla-dusk.jpg",
-    imageCount: 4,   // ← has vanilla-dusk.jpg + vanilla-dusk-1.jpg + vanilla-dusk-2.jpg
+    imageCount: 3,   // ← has vanilla-dusk.jpg + vanilla-dusk-1.jpg + vanilla-dusk-2.jpg
     badge: "Best Seller",
     featured: true,
     inStock: true,
-    amazonLink: "https://www.google.com",
+    amazonLink: "",
   },
   {
     id: 2,
@@ -86,7 +86,7 @@ const PRODUCTS = [
     badge: "",
     featured: true,
     inStock: true,
-    amazonLink: "https://www.google.com",
+    amazonLink: "",
   },
   {
     id: 3,
@@ -104,7 +104,6 @@ const PRODUCTS = [
     badge: "New",
     featured: true,
     inStock: true,
-    amazonLink: "https://www.google.com",
   },
   {
     id: 4,
@@ -122,7 +121,6 @@ const PRODUCTS = [
     badge: "Premium",
     featured: true,
     inStock: true,
-    amazonLink: "https://www.google.com",
   },
   {
     id: 5,
@@ -140,7 +138,6 @@ const PRODUCTS = [
     badge: "",
     featured: false,
     inStock: true,
-    amazonLink: "https://www.google.com",
   },
   {
     id: 6,
@@ -158,7 +155,6 @@ const PRODUCTS = [
     badge: "",
     featured: false,
     inStock: true,
-    amazonLink: "https://www.google.com",
   },
   {
     id: 7,
@@ -176,7 +172,6 @@ const PRODUCTS = [
     badge: "Seasonal",
     featured: false,
     inStock: true,
-    amazonLink: "https://www.google.com",
   },
   {
     id: 8,
@@ -194,6 +189,5 @@ const PRODUCTS = [
     badge: "",
     featured: false,
     inStock: false,
-    amazonLink: "https://www.google.com",
   },
 ];
